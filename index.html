@@ -31,18 +31,16 @@
       min-height: 100vh;
     }
 
-    /* Neon frame outline */
+    /* Neon frame outline (subtle flicker) */
     .box {
-      padding: 20px 32px; /* smaller padding */
+      padding: 20px 32px; /* compact */
       background: transparent;
       border: 2px solid var(--neon);
       border-radius: 12px;
-      box-shadow:
-        0 0 4px var(--neon),
-        0 0 10px var(--neon);
+      box-shadow: 0 0 4px var(--neon), 0 0 10px var(--neon);
       animation: neonFlicker var(--neon-dur) ease-in-out infinite;
       text-align: center;
-      max-width: 80%; /* keeps it narrower on big screens */
+      max-width: 80%;
     }
 
     @keyframes neonFlicker {
@@ -64,16 +62,18 @@
       }
     }
 
-    /* Glitch text effect (main) */
+    /* Glitch text effect (main + footer) */
     .glitch {
       position: relative;
       display: inline-block;
-      font-size: clamp(14px, 2.4vw, 28px); /* smaller font size */
+      font-size: clamp(14px, 2.4vw, 28px); /* slightly smaller type */
       line-height: 1.2;
       color: #fff;
       animation: shimmer 8s linear infinite;
+      will-change: transform, filter;
     }
 
+    /* Two RGB ghost layers with stronger splits */
     .glitch::before,
     .glitch::after {
       content: attr(data-text);
@@ -82,12 +82,24 @@
       color: #fff;
       pointer-events: none;
       opacity: 0;
+      /* keep blend normal for vivid color splits */
     }
 
-    /* stronger magenta/cyan shadows */
-    .glitch::before { text-shadow: var(--glitch-intensity) 0 #ff004c; }
-    .glitch::after  { text-shadow: calc(-1 * var(--glitch-intensity)) 0 #00c8ff; }
+    /* MAGENTA bursts (right + tiny vertical) with stacked shadows */
+    .glitch::before {
+      text-shadow:
+        var(--glitch-intensity) 0 #ff004c,
+        calc(var(--glitch-intensity) * 0.6) var(--glitch-intensity-y) #ff2a6d;
+    }
 
+    /* CYAN bursts (left + tiny vertical) with stacked shadows */
+    .glitch::after {
+      text-shadow:
+        calc(-1 * var(--glitch-intensity)) 0 #00c8ff,
+        calc(-1 * var(--glitch-intensity) * 0.6) calc(-1 * var(--glitch-intensity-y)) #19e3ff;
+    }
+
+    /* share timing across core + ghosts */
     .glitch,
     .glitch::before,
     .glitch::after {
@@ -99,11 +111,13 @@
     .glitch::before { animation-name: glitchBefore; }
     .glitch::after  { animation-name: glitchAfter; }
 
+    /* gentle alive shimmer */
     @keyframes shimmer {
       0%, 100% { filter: none; }
-      50% { filter: brightness(1.03) contrast(1.02); }
+      50% { filter: brightness(1.04) contrast(1.03); }
     }
 
+    /* Base layer: quick slice jitter window, then calm */
     @keyframes glitchBase {
       0%, 8%, 22%, 100% { transform: none; clip-path: inset(0 0 0 0); }
       10% { clip-path: inset(0 0 85% 0); }
@@ -113,38 +127,40 @@
       14% { clip-path: inset(0 0 0 0); transform: none; }
     }
 
+    /* Ghost layers: higher opacity + bolder movement during bursts */
     @keyframes glitchBefore {
       0%, 8%, 22%, 100% { opacity: 0; transform: none; }
-      10% { opacity: 0.9; transform: translate(1px, -0.5px); }
-      11% { opacity: 0.7; transform: translate(2px, 0.5px); }
-      12% { opacity: 0.9; transform: translate(1px, 0); }
-      13% { opacity: 0.6; transform: translate(0.5px, -0.5px); }
-      14% { opacity: 0; transform: none; }
+      10% { opacity: 1;   transform: translate(2px, -1px); }
+      11% { opacity: 0.9; transform: translate(3px, 1px); }
+      12% { opacity: 1;   transform: translate(2px, 0); }
+      13% { opacity: 0.8; transform: translate(1px, -1px); }
+      14% { opacity: 0;   transform: none; }
     }
 
     @keyframes glitchAfter {
       0%, 8%, 22%, 100% { opacity: 0; transform: none; }
-      10% { opacity: 0.8; transform: translate(-1px, 0.5px); }
-      11% { opacity: 0.6; transform: translate(-2px, -0.5px); }
-      12% { opacity: 0.8; transform: translate(-1px, 0); }
-      13% { opacity: 0.5; transform: translate(-0.5px, 0.5px); }
-      14% { opacity: 0; transform: none; }
+      10% { opacity: 1;   transform: translate(-2px, 1px); }
+      11% { opacity: 0.9; transform: translate(-3px, -1px); }
+      12% { opacity: 1;   transform: translate(-2px, 0); }
+      13% { opacity: 0.8; transform: translate(-1px, 1px); }
+      14% { opacity: 0;   transform: none; }
     }
 
-    /* Footer Easter egg */
+    /* Footer */
     .footer {
       margin-top: 20px;
       font-size: 0.8rem;
       color: #888;
-      opacity: 0.6;
+      opacity: 0.7;
+      text-align: center;
     }
 
     .footer .glitch {
       font-size: 0.8rem;
-      opacity: 0.7;
-      --glitch-dur: var(--footer-glitch-dur); /* overrides glitch timing */
+      --glitch-dur: var(--footer-glitch-dur); /* rare, subliminal */
     }
 
+    /* Reduced motion support */
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
       .box { box-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon); }
