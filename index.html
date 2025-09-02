@@ -1,65 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Story Notice</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Font: Audiowide -->
+  <link href="https://fonts.googleapis.com/css?family=Audiowide&display=swap" rel="stylesheet">
   <style>
+    :root {
+      --neon: #ffffff; /* white neon glow */
+      --glitch-dur: 2.8s;     /* main text glitch speed */
+      --footer-glitch-dur: 12s; /* footer glitches rarely */
+      --neon-dur: 6s;
+      --glitch-intensity: 1.5px;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      background: #000;
+    }
+
     body {
-      font-family: "Courier New", monospace;
+      font-family: 'Audiowide', sans-serif;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 100vh;
-      background: #000000;
-      margin: 0;
+      color: #fff;
+      min-height: 100vh;
     }
 
-    /* Neon box effect */
+    /* Neon frame outline */
     .box {
+      padding: 28px 44px;
+      background: transparent;
+      border: 2px solid var(--neon);
+      border-radius: 12px;
+      box-shadow:
+        0 0 6px  var(--neon),
+        0 0 14px var(--neon);
+      animation: neonFlicker var(--neon-dur) ease-in-out infinite;
       text-align: center;
-      padding: 20px 40px;
-      border: 2px solid #FCEF2D;
-      border-radius: 10px;
-      background: #111111;
-      color: #FCEF2D;
-      animation: neonPulse 4s infinite;
     }
 
-    @keyframes neonPulse {
-      0%, 100% {
-        box-shadow: 0 0 5px #FCEF2D, 0 0 15px #FCEF2D, 0 0 25px #FCEF2D;
+    @keyframes neonFlicker {
+      0%, 92%, 100% {
+        opacity: 1;
+        box-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon);
       }
-      50% {
-        box-shadow: 0 0 2px #FCEF2D, 0 0 5px #FCEF2D;
+      94% {
+        opacity: 0.92;
+        box-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon);
+      }
+      96% {
+        opacity: 0.85;
+        box-shadow: 0 0 2px var(--neon), 0 0 5px var(--neon);
+      }
+      98% {
+        opacity: 0.95;
+        box-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
       }
     }
 
-    /* Text glitch effect */
-    h1, p {
-      animation: glitchFlicker 2.2s infinite;
+    /* Glitch text effect (main) */
+    .glitch {
+      position: relative;
+      display: inline-block;
+      font-size: clamp(18px, 3.2vw, 36px);
+      line-height: 1.25;
+      color: #fff;
+      animation: shimmer 8s linear infinite;
     }
 
-    @keyframes glitchFlicker {
-      0%   { opacity: 1; letter-spacing: 0px; }
-      5%   { opacity: 0.4; letter-spacing: 1px; }
-      10%  { opacity: 1; letter-spacing: -1px; }
-      15%  { opacity: 0.7; letter-spacing: 0px; }
-      20%  { opacity: 1; letter-spacing: 0px; }
-      30%  { opacity: 0.5; letter-spacing: 2px; }
-      40%  { opacity: 1; letter-spacing: 0px; }
-      50%  { opacity: 0.6; letter-spacing: -2px; }
-      60%  { opacity: 1; letter-spacing: 0px; }
-      70%  { opacity: 0.4; }
-      80%  { opacity: 1; }
-      90%  { opacity: 0.8; letter-spacing: 1px; }
-      100% { opacity: 1; letter-spacing: 0px; }
+    .glitch::before,
+    .glitch::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      color: #fff;
+      mix-blend-mode: screen;
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .glitch::before { text-shadow: var(--glitch-intensity) 0 #ff004c; }
+    .glitch::after  { text-shadow: calc(-1 * var(--glitch-intensity)) 0 #00c8ff; }
+
+    .glitch,
+    .glitch::before,
+    .glitch::after {
+      animation-duration: var(--glitch-dur);
+      animation-iteration-count: infinite;
+    }
+
+    .glitch { animation-name: glitchBase; }
+    .glitch::before { animation-name: glitchBefore; }
+    .glitch::after  { animation-name: glitchAfter; }
+
+    @keyframes shimmer {
+      0%, 100% { filter: none; }
+      50% { filter: brightness(1.03) contrast(1.02); }
+    }
+
+    @keyframes glitchBase {
+      0%, 8%, 22%, 100% { transform: none; clip-path: inset(0 0 0 0); }
+      10% { clip-path: inset(0 0 85% 0); }
+      11% { clip-path: inset(10% 0 0 0); }
+      12% { clip-path: inset(0 0 60% 0); transform: translateY(-0.5px); }
+      13% { clip-path: inset(65% 0 0 0); transform: translateY(0.5px); }
+      14% { clip-path: inset(0 0 0 0); transform: none; }
+    }
+
+    @keyframes glitchBefore {
+      0%, 8%, 22%, 100% { opacity: 0; transform: none; }
+      10% { opacity: 0.9; transform: translate(1px, -0.5px); }
+      11% { opacity: 0.7; transform: translate(2px, 0.5px); }
+      12% { opacity: 0.9; transform: translate(1px, 0); }
+      13% { opacity: 0.6; transform: translate(0.5px, -0.5px); }
+      14% { opacity: 0; transform: none; }
+    }
+
+    @keyframes glitchAfter {
+      0%, 8%, 22%, 100% { opacity: 0; transform: none; }
+      10% { opacity: 0.8; transform: translate(-1px, 0.5px); }
+      11% { opacity: 0.6; transform: translate(-2px, -0.5px); }
+      12% { opacity: 0.8; transform: translate(-1px, 0); }
+      13% { opacity: 0.5; transform: translate(-0.5px, 0.5px); }
+      14% { opacity: 0; transform: none; }
+    }
+
+    /* Footer Easter egg */
+    .footer {
+      margin-top: 24px;
+      font-size: 0.9rem;
+      color: #888;
+      opacity: 0.6;
+    }
+
+    .footer .glitch {
+      font-size: 0.9rem;
+      opacity: 0.7;
+      --glitch-dur: var(--footer-glitch-dur); /* overrides glitch timing */
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      * { animation: none !important; transition: none !important; }
+      .box { box-shadow: 0 0 8px var(--neon), 0 0 14px var(--neon); }
     }
   </style>
 </head>
 <body>
   <div class="box">
-    <h1>This domain is for story purposes only</h1>
-    <p>No real communication is happening here.</p>
+    <h1 class="glitch" data-text="This domain is for story purposes only">
+      This domain is for story purposes only
+    </h1>
+    <p class="glitch" data-text="No real communication is happening here.">
+      No real communication is happening here.
+    </p>
+  </div>
+  <div class="footer">
+    <p class="glitch" data-text="Check your email.">Check your email.</p>
   </div>
 </body>
 </html>
