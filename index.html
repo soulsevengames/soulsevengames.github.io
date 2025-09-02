@@ -9,10 +9,10 @@
   <style>
     :root {
       --neon: #ffffff; /* white neon glow */
-      --glitch-dur: 2.8s;     /* main text glitch speed */
+      --glitch-dur: 2.8s;      /* main text glitch speed */
       --footer-glitch-dur: 12s; /* footer glitches rarely */
       --neon-dur: 6s;
-      --glitch-intensity: 1.5px;
+      --glitch-intensity: 2px;  /* stronger RGB offset */
     }
 
     html, body {
@@ -33,33 +33,34 @@
 
     /* Neon frame outline */
     .box {
-      padding: 28px 44px;
+      padding: 20px 32px; /* smaller padding */
       background: transparent;
       border: 2px solid var(--neon);
       border-radius: 12px;
       box-shadow:
-        0 0 6px  var(--neon),
-        0 0 14px var(--neon);
+        0 0 4px var(--neon),
+        0 0 10px var(--neon);
       animation: neonFlicker var(--neon-dur) ease-in-out infinite;
       text-align: center;
+      max-width: 80%; /* keeps it narrower on big screens */
     }
 
     @keyframes neonFlicker {
       0%, 92%, 100% {
         opacity: 1;
-        box-shadow: 0 0 6px var(--neon), 0 0 14px var(--neon);
+        box-shadow: 0 0 4px var(--neon), 0 0 10px var(--neon);
       }
       94% {
         opacity: 0.92;
-        box-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon);
+        box-shadow: 0 0 3px var(--neon), 0 0 6px var(--neon);
       }
       96% {
         opacity: 0.85;
-        box-shadow: 0 0 2px var(--neon), 0 0 5px var(--neon);
+        box-shadow: 0 0 2px var(--neon), 0 0 4px var(--neon);
       }
       98% {
         opacity: 0.95;
-        box-shadow: 0 0 5px var(--neon), 0 0 10px var(--neon);
+        box-shadow: 0 0 3px var(--neon), 0 0 8px var(--neon);
       }
     }
 
@@ -67,8 +68,8 @@
     .glitch {
       position: relative;
       display: inline-block;
-      font-size: clamp(18px, 3.2vw, 36px);
-      line-height: 1.25;
+      font-size: clamp(14px, 2.4vw, 28px); /* smaller font size */
+      line-height: 1.2;
       color: #fff;
       animation: shimmer 8s linear infinite;
     }
@@ -79,11 +80,11 @@
       position: absolute;
       inset: 0;
       color: #fff;
-      mix-blend-mode: screen;
       pointer-events: none;
       opacity: 0;
     }
 
+    /* stronger magenta/cyan shadows */
     .glitch::before { text-shadow: var(--glitch-intensity) 0 #ff004c; }
     .glitch::after  { text-shadow: calc(-1 * var(--glitch-intensity)) 0 #00c8ff; }
 
@@ -132,21 +133,21 @@
 
     /* Footer Easter egg */
     .footer {
-      margin-top: 24px;
-      font-size: 0.9rem;
+      margin-top: 20px;
+      font-size: 0.8rem;
       color: #888;
       opacity: 0.6;
     }
 
     .footer .glitch {
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       opacity: 0.7;
       --glitch-dur: var(--footer-glitch-dur); /* overrides glitch timing */
     }
 
     @media (prefers-reduced-motion: reduce) {
       * { animation: none !important; transition: none !important; }
-      .box { box-shadow: 0 0 8px var(--neon), 0 0 14px var(--neon); }
+      .box { box-shadow: 0 0 4px var(--neon), 0 0 8px var(--neon); }
     }
   </style>
 </head>
