@@ -19,23 +19,32 @@
       border: 2px solid #333;
       border-radius: 10px;
       background: #FCEF2D;
+      box-shadow: 0 0 12px rgba(252,239,45,0.5);
       color: #000000;
-      animation: neonFlicker 1.8s infinite;
+      animation: boxFlicker 6s infinite; /* slower, gentler flicker */
     }
-    @keyframes neonFlicker {
-      0%   { opacity: 1; box-shadow: 0 0 25px rgba(252,239,45,0.9); }
-      5%   { opacity: 0.4; box-shadow: none; }
-      10%  { opacity: 1; box-shadow: 0 0 15px rgba(252,239,45,0.7); }
-      15%  { opacity: 0.7; box-shadow: 0 0 5px rgba(252,239,45,0.3); }
-      20%  { opacity: 1; box-shadow: 0 0 30px rgba(252,239,45,1); }
-      30%  { opacity: 0.5; box-shadow: none; }
-      40%  { opacity: 1; box-shadow: 0 0 20px rgba(252,239,45,0.8); }
-      50%  { opacity: 0.3; box-shadow: none; }
-      60%  { opacity: 1; box-shadow: 0 0 25px rgba(252,239,45,1); }
-      70%  { opacity: 0.8; box-shadow: 0 0 10px rgba(252,239,45,0.5); }
-      80%  { opacity: 1; box-shadow: 0 0 20px rgba(252,239,45,0.9); }
-      90%  { opacity: 0.4; box-shadow: none; }
-      100% { opacity: 1; box-shadow: 0 0 25px rgba(252,239,45,1); }
+    h1, p {
+      animation: textFlicker 2s infinite; /* faster, sharper flicker */
+    }
+    @keyframes boxFlicker {
+      0%, 100% { opacity: 1; box-shadow: 0 0 12px rgba(252,239,45,0.5); }
+      40%      { opacity: 0.9; box-shadow: 0 0 5px rgba(252,239,45,0.3); }
+      60%      { opacity: 0.8; box-shadow: none; }
+    }
+    @keyframes textFlicker {
+      0%   { opacity: 1; }
+      5%   { opacity: 0.4; }
+      10%  { opacity: 1; }
+      15%  { opacity: 0.7; }
+      20%  { opacity: 1; }
+      30%  { opacity: 0.6; }
+      40%  { opacity: 1; }
+      50%  { opacity: 0.8; }
+      60%  { opacity: 1; }
+      70%  { opacity: 0.5; }
+      80%  { opacity: 1; }
+      90%  { opacity: 0.9; }
+      100% { opacity: 1; }
     }
   </style>
 </head>
@@ -43,7 +52,6 @@
   <div class="box">
     <h1>This domain is for story purposes only</h1>
     <p>No real communication is happening here.</p>
-    <sub>Do you want an email? This is how you get an email.</sub>sub
   </div>
 </body>
 </html>
